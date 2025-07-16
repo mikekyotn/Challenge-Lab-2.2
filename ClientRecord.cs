@@ -31,5 +31,10 @@ namespace Challenge_Lab_2._2
             Console.WriteLine("Your account is locked. Please contact us to unlock your account.");
         }
 
+        public bool VerifyUser(string userNameSbumitted)
+        {
+            return (String.Compare(userNameSbumitted, UserName) == 0);
+        }
+
     }
 }

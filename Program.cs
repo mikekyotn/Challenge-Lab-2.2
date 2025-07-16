@@ -8,39 +8,48 @@
             ClientRecord client1 = new();
             client1.FirstName = "Alfred";
             client1.LastName = "Butler";
-            client1.UserName = "BatmansButler";
-            client1.Password = "Alfred123";
+            client1.UserName = "User1";
+            client1.Password = "PW1";
             client1.IsBlocked = false;
 
             int attemptsRemaining = 3;
             bool loginVerified = false;
             string userNameAttempt = "";
             string passwordAttempt = "";
-            
-            while ((!loginVerified) && (attemptsRemaining > 0))
-            {
-                Console.Write("Please Enter UserName: ");
-                userNameAttempt = Console.ReadLine();
-                Console.Write("Please Enter Password: ");
-                passwordAttempt = Console.ReadLine();
-            
-                loginVerified = CheckCredentials(client1, userNameAttempt, passwordAttempt);
-                if (loginVerified)
-                {
-                    Console.WriteLine("You have successfully logged in.");                    
-                }
-                else
-                {
-                    attemptsRemaining--;
-                    Console.WriteLine($"You have {attemptsRemaining} attempts remaining before you account will be locked.");
-                }
-                
-            }
 
-            if ((attemptsRemaining == 0) && (!loginVerified))
+            Console.Write("Please Enter UserName: ");
+            userNameAttempt = Console.ReadLine();
+
+            if (client1.VerifyUser(userNameAttempt))
             {
-                
-                client1.BlockAccount();
+
+                while ((!loginVerified) && (attemptsRemaining > 0))
+                {
+                    Console.Write("Please Enter Password: ");
+                    passwordAttempt = Console.ReadLine();
+
+                    loginVerified = CheckCredentials(client1, userNameAttempt, passwordAttempt);
+                    
+                    if (loginVerified)
+                    {
+                        Console.WriteLine("You have successfully logged in.");
+                    }
+                    else
+                    {
+                        attemptsRemaining--;
+                        Console.WriteLine($"You have {attemptsRemaining} attempts remaining before you account will be locked.");
+                    }
+
+                }
+
+                if ((attemptsRemaining == 0) && (!loginVerified))
+                {
+                    client1.BlockAccount();
+                }
+            }
+            else
+            {
+                Console.WriteLine("Username not recognized.");
             }
 
         }
@@ -56,5 +65,6 @@
                 return false;
             }
         }
+        
     }
 }
