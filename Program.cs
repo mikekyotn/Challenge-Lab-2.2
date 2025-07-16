@@ -10,13 +10,14 @@
             client1.LastName = "Butler";
             client1.UserName = "BatmansButler";
             client1.Password = "Alfred123";
+            client1.IsBlocked = false;
 
             int attemptsRemaining = 3;
             bool loginVerified = false;
             string userNameAttempt = "";
             string passwordAttempt = "";
             
-            while ((!loginVerified) || (attemptsRemaining > 0))
+            while ((!loginVerified) && (attemptsRemaining > 0))
             {
                 Console.Write("Please Enter UserName: ");
                 userNameAttempt = Console.ReadLine();
@@ -24,14 +25,22 @@
                 passwordAttempt = Console.ReadLine();
             
                 loginVerified = CheckCredentials(client1, userNameAttempt, passwordAttempt);
+                if (loginVerified)
+                {
+                    Console.WriteLine("You have successfully logged in.");                    
+                }
+                else
+                {
+                    attemptsRemaining--;
+                    Console.WriteLine($"You have {attemptsRemaining} attempts remaining before you account will be locked.");
+                }
                 
-                attemptsRemaining--;
-                //PROBLEM here if user get it on the last try... it will be 0 as well
             }
 
-            if (attemptsRemaining == 0)
+            if ((attemptsRemaining == 0) && (!loginVerified))
             {
-                Console.WriteLine("Three failed attempts.  Goodbye.");
+                
+                client1.BlockAccount();
             }
 
         }
